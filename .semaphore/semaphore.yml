@@ -55,3 +55,21 @@ blocks:
         - name: Test
           commands:
             - go test ./...
+  - name: Build
+    task:
+      env_vars:
+        - name: GO111MODULE
+          value: 'on'
+        - name: GOFLAGS
+          value: '-mod=vendor'
+      prologue:
+        commands:
+          - sem-version go 1.13
+          - checkout
+          - 'cache restore vendor-$SEMAPHORE_GIT_BRANCH-$(checksum go.mod),vendor-$SEMAPHORE_GIT_BRANCH,vendor-master'
+          - go mod vendor
+      jobs:
+        - name: Build
+          commands:
+            - go build -v -o go-mux-api
+            - artifact push project --force go-mux-api
