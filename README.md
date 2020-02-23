@@ -1,5 +1,18 @@
 # Golang Mux Demo
 
+## Setup
+
+- Fork this repository
+- Configure your modules:
+
+```bash
+$ go mod init github.com/TomFern/go-mux-api
+$ go get -u github.com/gorilla/mux github.com/lib/pq
+$ go mod vendor
+$ export GOFLAGS=-mod=vendor
+$ export GO111MODULE=on
+```
+
 ## Run locally
 
 - Start postgres
