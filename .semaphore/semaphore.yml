@@ -10,10 +10,11 @@ blocks:
       jobs:
         - name: go test
           commands:
-            - sem-version go 1.11
-            - "export GO111MODULE=on"
-            - "export GOPATH=~/go"
-            - "export PATH=/home/semaphore/go/bin:$PATH"
+            - sem-version go 1.13
+            - sem-service postgres
+            - export GO111MODULE=on
+            - export GOPATH=~/go
+            - 'export PATH=/home/semaphore/go/bin:$PATH'
             - checkout
             - go get ./...
             - go test ./...
