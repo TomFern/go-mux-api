@@ -21,3 +21,36 @@ blocks:
             - go get ./...
             - go test ./...
             - go build -v .
+  - name: Install
+    task:
+      env_vars:
+        - name: GO111MODULE
+          value: 'on'
+        - name: GOFLAGS
+          value: '-mod=vendor'
+      jobs:
+        - name: Install
+          commands:
+            - sem-version go 1.13
+            - checkout
+            - 'cache restore vendor-$SEMAPHORE_GIT_BRANCH-$(checksum go.mod),vendor-$SEMAPHORE_GIT_BRANCH,vendor-master'
+            - go mod vendor
+            - 'cache store vendor-$SEMAPHORE_GIT_BRANCH-$(checksum go.mod),vendor-$SEMAPHORE_GIT_BRANCH,vendor-master vendor'
+  - name: Test cache
+    task:
+      env_vars:
+        - name: GO111MODULE
+          value: 'on'
+        - name: GOFLAGS
+          value: '-mod=vendor'
+      prologue:
+        commands:
+          - sem-version go 1.13
+          - sem-service start postgres
+          - checkout
+          - 'cache restore vendor-$SEMAPHORE_GIT_BRANCH-$(checksum go.mod),vendor-$SEMAPHORE_GIT_BRANCH,vendor-master'
+          - go mod vendor
+      jobs:
+        - name: Test
+          commands:
+            - go test ./...
