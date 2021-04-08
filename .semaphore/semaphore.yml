@@ -21,7 +21,7 @@ blocks:
             - go test ./...
             - go build -v .
     dependencies: []
-  - name: Download dependencies
+  - name: Download
     dependencies: []
     task:
       env_vars:
@@ -35,10 +35,11 @@ blocks:
             - sem-version go 1.16
             - checkout
             - 'cache restore '
+            - go mod vendor
             - cache store
   - name: Tests
     dependencies:
-      - Download dependencies
+      - Download
     task:
       env_vars:
         - name: GO111MODULE
