@@ -20,3 +20,61 @@ blocks:
             - source env-test
             - go test ./...
             - go build -v .
+    dependencies: []
+  - name: Download dependencies
+    dependencies: []
+    task:
+      env_vars:
+        - name: GO111MODULE
+          value: 'on'
+        - name: GOFLAGS
+          value: '-mod=vendor'
+      jobs:
+        - name: go get
+          commands:
+            - sem-version go 1.16
+            - checkout
+            - 'cache restore '
+            - cache store
+  - name: Tests
+    dependencies:
+      - Download dependencies
+    task:
+      env_vars:
+        - name: GO111MODULE
+          value: 'on'
+        - name: GOFLAGS
+          value: '-mod=vendor'
+      prologue:
+        commands:
+          - sem-version go 1.16
+          - sem-service start postgres
+          - checkout
+          - cache restore
+          - go mod vendor
+          - source env-sample
+      jobs:
+        - name: go test
+          commands:
+            - go test ./...
+  - name: Build
+    dependencies:
+      - Tests
+    task:
+      env_vars:
+        - name: GO111MODULE
+          value: 'on'
+        - name: GOFLAG
+          value: '-mod=vendor'
+      prologue:
+        commands:
+          - sem-version go 1.16
+          - sem-service start postgres
+          - checkout
+          - cache restore
+          - go mod vendor
+      jobs:
+        - name: go build
+          commands:
+            - go build -v -o go-mux.bin
+            - artifact push project --force go-mux.bin
