@@ -1,20 +1,26 @@
 # Golang Mux Demo
 
+[![Build Status](https://tomfern.semaphoreci.com/badges/go-mux-api/branches/master.svg)](https://tomfern.semaphoreci.com/projects/go-mux-api)
+
+Read the complete post with the explanation here:
+
+https://semaphoreci.com/community/tutorials/building-and-testing-a-rest-api-in-go-with-gorilla-mux-and-postgresql
+
 ## Run locally
 
 - Start postgres
 - Prepare environment, fill DB parameters:
 
 ``` bash
-$ cp env-sample .env
-$ $EDITOR .env
-$ source .env
+$ source env-sample
 ```
 
 - Build and run:
 
 ```bash
-$ go get -u github.com/gorilla/mux github.com/lib/pq
+$ export GO111MODULE=on
+$ export GOFLAGS=-mod=vendor
+$ go mod download
 $ go build -o go-mux-api.bin
 $ ./go-mux-api.bin
 ```
@@ -43,4 +49,6 @@ ok      _/home/tom/r/go-mux-api 0.034s
 
 ## License
 
-The project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Copyright (c) 2021 Rendered Text
+
+Distributed under the MIT License. See the file LICENSE.
