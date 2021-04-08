@@ -13,7 +13,7 @@ import (
     "encoding/json"
     "bytes"
 
-    _ "main"
+    "github.com/TomFern/go-mux-api"
 
 )
 

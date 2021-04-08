@@ -17,5 +17,6 @@ blocks:
             - 'export PATH=/home/semaphore/go/bin:$PATH'
             - checkout
             - go get ./...
+            - source env-test
             - go test ./...
             - go build -v .
