@@ -10,7 +10,7 @@ blocks:
       jobs:
         - name: go test
           commands:
-            - sem-service start postqres
+            - sem-service start postgres
             - sem-version go 1.11
             - export GO111MODULE=on
             - export GOPATH=~/go
